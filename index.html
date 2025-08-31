@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="svg" href="public/logo.svg">
+    <title>NBTA - Green Oasis in Tangier's Medina</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3a1e 0%, #2d5016 100%);
+        }
+
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .menu-item {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .room-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f7f7f7 100%);
+        }
+
+        .leaf-decoration {
+            position: absolute;
+            opacity: 0.05;
+            font-size: 150px;
+            color: #2d5016;
+        }
+
+        /* Map Styles */
+        .map-container {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            height: 400px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .map-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            padding: 60px 0;
+            background: linear-gradient(to bottom, #fafafa 0%, #f0f5e9 100%);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            font-size: 2.8rem;
+            color: #2d5016;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #7fb13b;
+            margin: 15px auto;
+        }
+
+        .reviews-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .review-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .review-card:before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            right: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 120px;
+            color: rgba(47, 80, 22, 0.05);
+            line-height: 1;
+        }
+
+        .stars {
+            color: #ffb400;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .review-text {
+            color: #444;
+            margin-bottom: 20px;
+            font-style: italic;
+            line-height: 1.7;
+        }
+
+        .reviewer {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .reviewer-avatar {
+            width: 45px;
+            height: 45px;
+            background: #e8f4e1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #4a7c2d;
+            font-size: 1.2rem;
+        }
+
+        .reviewer-info h4 {
+            font-weight: 600;
+            color: #2d5016;
+            margin-bottom: 4px;
+        }
+
+        .reviewer-info p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .review-date {
+            color: #999;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .review-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .review-actions i {
+            color: #7a7a7a;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .review-actions i:hover {
+            color: #4a7c2d;
+        }
+
+        .local-guide-badge {
+            background: #f8e71c;
+            color: #333;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 antialiased">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full bg-white/95 backdrop-blur-md shadow-sm z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#home" class="font-playfair text-2xl font-bold text-green-900">NBTA</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-green-700 transition-colors">Home</a>
+                    <a href="#about" class="text-gray-700 hover:text-green-700 transition-colors">About</a>
+                    <a href="#menu" class="text-gray-700 hover:text-green-700 transition-colors">Menu</a>
+                    <a href="#cocktails" class="text-gray-700 hover:text-green-700 transition-colors">Cocktails</a>
+                    <a href="#rooms" class="text-gray-700 hover:text-green-700 transition-colors">Rooms</a>
+                    <a href="#contact" class="text-gray-700 hover:text-green-700 transition-colors">Contact</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-700 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-4 space-y-4">
+                <a href="#home" class="block text-gray-700 hover:text-green-700">Home</a>
+                <a href="#about" class="block text-gray-700 hover:text-green-700">About</a>
+                <a href="#menu" class="block text-gray-700 hover:text-green-700">Menu</a>
+                <a href="#cocktails" class="block text-gray-700 hover:text-green-700">Cocktails</a>
+                <a href="#rooms" class="block text-gray-700 hover:text-green-700">Rooms</a>
+                <a href="#contact" class="block text-gray-700 hover:text-green-700">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden">
+        <div class="leaf-decoration top-10 right-10">🌿</div>
+        <div class="leaf-decoration bottom-10 left-10 rotate-45">🌿</div>
+        <div class="container mx-auto px-4 text-center text-white animate-fade-in z-10">
+            <h1 class="font-playfair text-5xl md:text-7xl mb-6 text-shadow">NBTA</h1>
+            <p class="text-xl md:text-2xl mb-4 text-green-100">A Green Oasis in the Heart of Tangier's Medina</p>
+            <p class="text-lg mb-8 max-w-2xl mx-auto text-green-50">Guest Rooms • Cultural Space • Vegetarian Cuisine
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#menu"
+                    class="bg-white text-green-900 px-8 py-3 rounded-full font-semibold hover:bg-green-50 transition-all">Explore
+                    Menu</a>
+                <a href="#rooms"
+                    class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-green-900 transition-all">Book
+                    a Room</a>
+            </div>
+            <div class="mt-12 text-green-100">
+                <p class="mb-2">Tuesday to Sunday • 10:00 - 00:00</p>
+                <p>8, rue Vicente, Tangier, Morocco</p>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-white animate-bounce">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="font-playfair text-4xl md:text-5xl mb-8 text-center text-green-900">Our Story</h2>
+                <div class="space-y-6 text-gray-700 leading-relaxed">
+                    <p class="text-lg italic text-center text-green-700">
+                        "Every corner of NBTA carries its own rhythm, the soft texture of the floors, the calm play of
+                        light, the quiet harmony of design."
+                    </p>
+                    <p>
+                        NBTA is more than just a restaurant and guesthouse – it's a space for gathering, collective
+                        reflection, and nourishing the senses. We host a range of cultural and culinary experiences that
+                        center creativity while honoring the land.
+                    </p>
+                    <p>
+                        Our kitchen reflects these values, offering hearty vegetarian dishes that celebrate local
+                        knowledge while inviting new rituals around food, art, and togetherness. Each dish is crafted
+                        with seasonal ingredients, following slow, sustainable rhythms.
+                    </p>
+                    <p>
+                        Step inside, and let the atmosphere guide you through an experience where time slows, where good
+                        food doesn't need to shout to be remembered, and where every detail has been thoughtfully
+                        considered.
+                    </p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <i class="fas fa-leaf text-4xl text-green-600 mb-4"></i>
+                        <h3 class="font-semibold text-xl mb-2">Plant-Based</h3>
+                        <p class="text-gray-600">100% vegetarian cuisine with vegan options</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-seedling text-4xl text-green-600 mb-4"></i>
+                        <h3 class="font-semibold text-xl mb-2">Sustainable</h3>
+                        <p class="text-gray-600">Local ingredients & low-waste practices</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-palette text-4xl text-green-600 mb-4"></i>
+                        <h3 class="font-semibold text-xl mb-2">Cultural Hub</h3>
+                        <p class="text-gray-600">Art, food & community experiences</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="font-playfair text-4xl md:text-5xl mb-4 text-center text-green-900">Our Menu</h2>
+            <p class="text-center text-gray-600 mb-12">Fresh, plant-based, and full of goodness</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- Starters -->
+                <div class="bg-white rounded-lg shadow-lg p-8 card-hover">
+                    <h3 class="font-playfair text-2xl mb-6 text-green-800">Starters</h3>
+                    <div class="space-y-4">
+                        <div class="menu-item flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Mezze Platter</h4>
+                                <p class="text-sm text-gray-600 mt-1">Served with Batbout & veggie crudités</p>
+                            </div>
+                            <span class="text-green-700 font-semibold whitespace-nowrap ml-4">100 DH</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Briouate Mix</h4>
+                                <p class="text-sm text-gray-600 mt-1">3 different moroccan briouates with green leaves
+                                </p>
+                            </div>
+                            <span class="text-green-700 font-semibold whitespace-nowrap ml-4">75 DH</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Chickpea Fries</h4>
+                                <p class="text-sm text-gray-600 mt-1">Tangier Karan-inspired crispy delight</p>
+                            </div>
+                            <span class="text-green-700 font-semibold whitespace-nowrap ml-4">50 DH</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Dishes -->
+                <div class="bg-white rounded-lg shadow-lg p-8 card-hover">
+                    <h3 class="font-playfair text-2xl mb-6 text-green-800">Main Dishes</h3>
+                    <div class="space-y-4">
+                        <div class="menu-item flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">NBTA Salad</h4>
+                                <p class="text-sm text-gray-600 mt-1">Mix of local greens, vg. fried 'chicken', candied
+                                    tomatoes, almonds & avocado</p>
+                            </div>
+                            <span class="text-green-700 font-semibold whitespace-nowrap ml-4">75 DH</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Terracota Dish</h4>
+                                <p class="text-sm text-gray-600 mt-1">Vegan Kefta balls on Romesco sauce bed</p>
+                            </div>
+                            <span class="text-green-700 font-semibold whitespace-nowrap ml-4">90 DH</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Mrouziya</h4>
+                                <p class="text-sm text-gray-600 mt-1">Moroccan vg. 'meat' confit with Ras-el-hanout</p>
+                            </div>
+                            <span class="text-green-700 font-semibold whitespace-nowrap ml-4">100 DH</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desserts -->
+                <div class="bg-white rounded-lg shadow-lg p-8 card-hover">
+                    <h3 class="font-playfair text-2xl mb-6 text-green-800">Desserts</h3>
+                    <div class="space-y-4">
+                        <div class="menu-item flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Amlou Lava Cake</h4>
+                                <p class="text-sm text-gray-600 mt-1">Classic lava cake with a Moroccan spin</p>
+                            </div>
+                            <span class="text-green-700 font-semibold whitespace-nowrap ml-4">40 DH</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Basbousa</h4>
+                                <p class="text-sm text-gray-600 mt-1">Traditional semolina cake with orange blossom</p>
+                            </div>
+                            <span class="text-green-700 font-semibold whitespace-nowrap ml-4">40 DH</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Almoncado Pastilla</h4>
+                                <p class="text-sm text-gray-600 mt-1">Layered filo with avocado cream & caramelized nuts
+                                </p>
+                            </div>
+                            <span class="text-green-700 font-semibold whitespace-nowrap ml-4">45 DH</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Breakfast -->
+                <div class="bg-white rounded-lg shadow-lg p-8 card-hover">
+                    <h3 class="font-playfair text-2xl mb-6 text-green-800">Breakfast</h3>
+                    <div class="space-y-4">
+                        <div class="menu-item flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Traditional Breakfast</h4>
+                                <p class="text-sm text-gray-600 mt-1">3 breads (Batbout, Baghrir, Msmen) with
+                                    plant-based cheese, marmalade, butter & amlou</p>
+                            </div>
+                            <span class="text-green-700 font-semibold whitespace-nowrap ml-4">85 DH</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Download Menu Links -->
+            <div class="mt-12 text-center">
+                <p class="text-gray-600 mb-4">Download our full menu</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="https://drive.google.com/file/d/1qCa-NL1Cah9ps3q3atprDgqkZRXD-YRF/view" target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center px-6 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors">
+                        <i class="fas fa-download mr-2"></i> English Menu
+                    </a>
+                    <a href="https://drive.google.com/file/d/15CURzzLrMFQdJwLDYFzMH6fp9c_LmsxB/view" target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center px-6 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors">
+                        <i class="fas fa-download mr-2"></i> Menu Français
+                    </a>
+                    <a href="https://drive.google.com/file/d/1mRXXD_gPBn5UfHJE2qARUClNGn-8JHHD/view" target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center px-6 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors">
+                        <i class="fas fa-download mr-2"></i> القائمة العربية
+                    </a>
+                    <a href="https://drive.google.com/file/d/1RQDWNN9FilfjVlHUOmCOgLbPT2pRgRDl/view" target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center px-6 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors">
+                        <i class="fas fa-download mr-2"></i> Cocktails Menu
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cocktails Section -->
+    <section id="cocktails" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="font-playfair text-4xl md:text-5xl mb-4 text-center text-green-900">Signature Cocktails</h2>
+            <p class="text-center text-gray-600 mb-12">Alcohol-free craft cocktails inspired by Morocco</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <div class="bg-gradient-to-br from-green-50 to-white rounded-lg p-6 border border-green-100 card-hover">
+                    <h3 class="font-bold text-xl mb-2 text-green-800">AZIṚ</h3>
+                    <p class="text-gray-600 mb-3">Beldi lemon • Rosemary</p>
+                    <span class="text-green-700 font-semibold">45 DH</span>
+                </div>
+                <div
+                    class="bg-gradient-to-br from-yellow-50 to-white rounded-lg p-6 border border-yellow-100 card-hover">
+                    <h3 class="font-bold text-xl mb-2 text-yellow-800">LOUISA</h3>
+                    <p class="text-gray-600 mb-3">Pineapple • Verbena</p>
+                    <span class="text-green-700 font-semibold">60 DH</span>
+                </div>
+                <div class="bg-gradient-to-br from-pink-50 to-white rounded-lg p-6 border border-pink-100 card-hover">
+                    <h3 class="font-bold text-xl mb-2 text-pink-800">ḤBEQ</h3>
+                    <p class="text-gray-600 mb-3">Peach • Basil</p>
+                    <span class="text-green-700 font-semibold">50 DH</span>
+                </div>
+                <div class="bg-gradient-to-br from-red-50 to-white rounded-lg p-6 border border-red-100 card-hover">
+                    <h3 class="font-bold text-xl mb-2 text-red-800">SOUDANIYA</h3>
+                    <p class="text-gray-600 mb-3">Feggous Cucumber • Chili</p>
+                    <span class="text-green-700 font-semibold">45 DH</span>
+                </div>
+                <div
+                    class="bg-gradient-to-br from-orange-50 to-white rounded-lg p-6 border border-orange-100 card-hover">
+                    <h3 class="font-bold text-xl mb-2 text-orange-800">QARFA</h3>
+                    <p class="text-gray-600 mb-3">Grapefruit • Cinnamon</p>
+                    <span class="text-green-700 font-semibold">50 DH</span>
+                </div>
+                <div
+                    class="bg-gradient-to-br from-purple-50 to-white rounded-lg p-6 border border-purple-100 card-hover">
+                    <h3 class="font-bold text-xl mb-2 text-purple-800">SALMIYA</h3>
+                    <p class="text-gray-600 mb-3">Citrus Koso • Sage</p>
+                    <span class="text-green-700 font-semibold">50 DH</span>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <div
+                    class="inline-block bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg p-6 shadow-lg card-hover">
+                    <h3 class="font-bold text-xl mb-2">COCKTAIL OF THE DAY</h3>
+                    <p class="mb-3">A surprise creation by our mixologist</p>
+                    <span class="font-semibold">60 DH</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rooms Section -->
+    <section id="rooms" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="font-playfair text-4xl md:text-5xl mb-4 text-center text-green-900">Guest Rooms</h2>
+            <p class="text-center text-gray-600 mb-12">Stay in our carefully designed spaces</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <div class="room-card rounded-lg shadow-lg overflow-hidden card-hover">
+                    <div class="p-8">
+                        <h3 class="font-playfair text-2xl mb-4 text-gray-800">Ocher Room</h3>
+                        <p class="text-gray-600 mb-6">Warm earth tones create a cozy sanctuary inspired by Moroccan
+                            landscapes.</p>
+                        <a href="https://www.airbnb.com/rooms/912372895497217312" target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center text-green-600 hover:text-green-700 font-semibold">
+                            Book Now <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="room-card rounded-lg shadow-lg overflow-hidden card-hover">
+                    <div class="p-8">
+                        <h3 class="font-playfair text-2xl mb-4 text-gray-800">Grey Room</h3>
+                        <p class="text-gray-600 mb-6">Minimalist elegance with soothing neutral tones for peaceful
+                            relaxation.</p>
+                        <a href="https://es-l.airbnb.com/rooms/963046888312837975" target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center text-green-600 hover:text-green-700 font-semibold">
+                            Book Now <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="room-card rounded-lg shadow-lg overflow-hidden card-hover">
+                    <div class="p-8">
+                        <h3 class="font-playfair text-2xl mb-4 text-gray-800">Green Room</h3>
+                        <p class="text-gray-600 mb-6">Nature-inspired retreat with botanical elements and calming green
+                            accents.</p>
+                        <a href="https://www.airbnb.com/rooms/912383793423059850" target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center text-green-600 hover:text-green-700 font-semibold">
+                            Book Now <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="room-card rounded-lg shadow-lg overflow-hidden card-hover">
+                    <div class="p-8">
+                        <h3 class="font-playfair text-2xl mb-4 text-gray-800">Black Room</h3>
+                        <p class="text-gray-600 mb-6">Sophisticated modern design with dramatic contrasts and luxurious
+                            comfort.</p>
+                        <a href="https://www.airbnb.co.uk/rooms/1270259188929646121" target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center text-green-600 hover:text-green-700 font-semibold">
+                            Book Now <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="reviews-section">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">What Our Guests Say</h2>
+
+            <div class="reviews-container">
+                <!-- Review 1 -->
+                <div class="review-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-text">Food was delicious, we had 2 full meals to share between 3, which we were
+                        advised would be too much but was the perfect amount for us (a lot of bread) the briouates and
+                        mezze sharing platter were delicious as was the vegan meatballs.</p>
+                    <div class="reviewer">
+                        <div class="reviewer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="reviewer-info">
+                            <h4>Lily Hollett</h4>
+                            <p>4 reviews · 2 photos <span class="review-date">a month ago</span></p>
+                        </div>
+                    </div>
+                    <div class="review-meta">
+                        <div class="review-actions">
+                            <i class="fas fa-thumbs-up"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="review-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-text">Nebta in Tangier is a hidden gem that beautifully blends authenticity with
+                        charm. The food was deeply flavorful. Nestled in the heart of the medina yet just a short walk
+                        from the corniche, it's easily accessible without losing that magical, traditional feel.</p>
+                    <div class="reviewer">
+                        <div class="reviewer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="reviewer-info">
+                            <h4>Abouhanifa Oumaima <span class="local-guide-badge">Local Guide</span></h4>
+                            <p>29 reviews · 60 photos <span class="review-date">4 months ago</span></p>
+                        </div>
+                    </div>
+                    <div class="review-meta">
+                        <div class="review-actions">
+                            <i class="fas fa-thumbs-up"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="review-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-text">I recently visited a café called Nebta in the heart of the old Madina, and it
+                        was such a calm and lovely experience. The atmosphere was peaceful and beautifully
+                        designed—perfect if you're looking for inspiration or simply want to relax with delicious food.
+                    </p>
+                    <div class="reviewer">
+                        <div class="reviewer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="reviewer-info">
+                            <h4>Yasmine <span class="local-guide-badge">Local Guide</span></h4>
+                            <p>61 reviews · 1,192 photos <span class="review-date">3 months ago</span></p>
+                        </div>
+                    </div>
+                    <div class="review-meta">
+                        <div class="review-actions">
+                            <i class="fas fa-thumbs-up"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 4 -->
+                <div class="review-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-text">We cannot stop thinking about this place! As vegans in Morocco it was hard to
+                        find anywhere even close to this kind of food. The people who run the hotel are so friendly too.
+                        You have to go! We experienced a vegan iftar feast.</p>
+                    <div class="reviewer">
+                        <div class="reviewer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="reviewer-info">
+                            <h4>Rachel Dover</h4>
+                            <p>7 reviews · 3 photos <span class="review-date">5 months ago</span></p>
+                        </div>
+                    </div>
+                    <div class="review-meta">
+                        <div class="review-actions">
+                            <i class="fas fa-thumbs-up"></i>
+                            <i class="fas fa-share"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="font-playfair text-4xl md:text-5xl mb-12 text-center text-green-900">Visit Us</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <!-- Map Section -->
+                <div>
+                    <h3 class="font-semibold text-xl mb-4 text-green-800">Find Us</h3>
+                    <div class="map-container">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3237.965998728889!2d-5.821313323939887!3d35.76275622196981!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0b8745b2c1b6c7%3A0x7e8e4d8e4d8e4d8e!2s8%20Rue%20Vicente%2C%20Tangier%2C%20Morocco!5e0!3m2!1sen!2sus!4v1690123456789!5m2!1sen!2sus"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                            title="NBTA Location Map">
+                        </iframe>
+                    </div>
+                    <div class="mt-4 flex justify-center">
+                        <a href="https://maps.app.goo.gl/yDgdGQC1AGCyJNSv7" target="_blank" rel="noopener noreferrer"
+                            class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors">
+                            <i class="fas fa-map-marked-alt mr-2"></i> Open in Google Maps
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Contact Form Section -->
+                <div>
+                    <h3 class="font-semibold text-xl mb-6 text-green-800">Send Us a Message</h3>
+					<form class="space-y-4" name="contactForm" id="contactForm" method="post" action="https://formsubmit.co/6233b2229a99fdae0a78f902daa55445"
+                        class="space-y-4">
+                        <input type="hidden" name="_subject" value="New submission!">
+                        <input type="hidden" name="_cc" value="anouarmezgualli17@gmail.com">
+                        <input type="hidden" name="_captcha" value="false">                        
+                        <!-- Honeypot for spam protection -->
+                        <input type="checkbox" name="botcheck" id="botcheck" class="hidden" style="display: none;">
+						
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                            <input type="text" id="contactName" name="name" placeholder="Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" id="contactEmail" placeholder="Email" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required>
+                        </div>
+						<div>
+                            <label for="subjectsubject" class="block text-sm font-medium text-gray-700">Subject</label>
+                            <input id="contactSubject" name="subject" placeholder="Subject" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required></input>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                            <textarea id="contactMessage" name="message" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors">Send Message</button>
+						<div id="submit-loader">
+                        <div class="text-loader"></div>
+                        <div class="s-loader">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-green-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="font-playfair text-2xl mb-4">NBTA</h3>
+                    <p class="text-green-100">A green oasis in the heart of Tangier's Medina, offering plant-based
+                        cuisine and cultural experiences.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-green-100">
+                        <li><a href="#menu" class="hover:text-white transition-colors">Menu</a></li>
+                        <li><a href="#rooms" class="hover:text-white transition-colors">Rooms</a></li>
+                        <li><a href="#events" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Information</h4>
+                    <ul class="space-y-2 text-green-100">
+                        <li>Tuesday - Sunday</li>
+                        <li>10:00 - 00:00</li>
+                        <li>8, rue Vicente</li>
+                        <li>Tangier, Morocco</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com/nbtahouse"
+                            class="text-green-100 hover:text-white transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="https://mail.google.com/mail/?view=cm&to=nbtahouse@gmail.com" target="_blank"
+                            class="text-green-100 hover:text-white transition-colors">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-green-800 mt-8 pt-8 text-center text-green-100">
+                <p>&copy; 2025 NBTA. All rights reserved. Made with 🌱 in Tangier.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Simple like functionality
+        document.querySelectorAll('.fa-thumbs-up').forEach(icon => {
+            icon.addEventListener('click', function () {
+                this.classList.toggle('active');
+                this.style.color = this.classList.contains('active') ? '#4a7c2d' : '#7a7a7a';
+            });
+        });
+
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
+    <script>
+    // Contact form AJAX submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('contactForm');
+        if (!form) return;
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    form.innerHTML = `<div class="text-green-700 text-lg font-semibold text-center py-8">Your message was sent, thank you!</div>`;
+                } else {
+                    form.innerHTML = `<div class="text-red-600 text-lg font-semibold text-center py-8">There was an error sending your message. Please try again later.</div>`;
+                }
+            } catch (error) {
+                form.innerHTML = `<div class="text-red-600 text-lg font-semibold text-center py-8">There was an error sending your message. Please try again later.</div>`;
+            }
+        });
+    });
+</script>
+</body>
+
+</html>
